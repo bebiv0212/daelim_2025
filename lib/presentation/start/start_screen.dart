@@ -1,7 +1,22 @@
+import 'package:daelim_2025/app/router/app_route.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
+
+  final _title = 'Get Started with \nTracking Your Health!';
+  final _description =
+      'Calculate your BMI and stay on top of your wellness journey, effortlessly.';
+
+  TextStyle get _titleStyle => TextStyle(
+    color: Colors.white,
+    fontSize: 25,
+    fontWeight: FontWeight.bold,
+    fontStyle: FontStyle.italic,
+  );
+
+  TextStyle get _descStyle => TextStyle(fontSize: 15, color: Color(0xffc6c3f9));
 
   // 앱 이름
   Widget _buildAppName() {
@@ -20,7 +35,7 @@ class StartScreen extends StatelessWidget {
   // 타이틀
   Widget _buildTitle() {
     return Text(
-      'Get Started with \nTracking Your Health!',
+      _title,
       style: TextStyle(
         color: Colors.white,
         fontSize: 25,
@@ -31,17 +46,33 @@ class StartScreen extends StatelessWidget {
 
   // 설명
   Widget _buildDescription() {
-    return Text(
-      'Calculate your BMI and stay on top of your wellness journey, effortlessly.',
-      style: TextStyle(fontSize: 15, color: Color(0xffc6c3f9)),
-    );
+    return Text(_description, style: _descStyle);
   }
 
   // 버튼
-  Widget _buildStartButton() {
+  Widget _buildStartButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: ElevatedButton(onPressed: () {}, child: Text('Get Started')),
+      height: 50,
+      child: ElevatedButton(
+        onPressed: () => context.go(AppRoute.main.toPath),
+        style: ElevatedButton.styleFrom(foregroundColor: Color(0xff081854)),
+        child: Text('Get Started'),
+      ),
+    );
+  }
+
+  // 타이틀, 설명 합친거거
+  Widget _buildTitleDesc() {
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(text: _title, style: _titleStyle),
+          TextSpan(text: '\n'),
+          WidgetSpan(child: SizedBox(height: 30)),
+          TextSpan(text: _description, style: _descStyle),
+        ],
+      ),
     );
   }
 
@@ -61,16 +92,12 @@ class StartScreen extends StatelessWidget {
                 SizedBox(height: 60),
                 Image.asset('assets/images/bmi_bike.png'),
                 SizedBox(height: 95),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildTitle(),
-                    SizedBox(height: 15),
-                    _buildDescription(),
-                  ],
-                ),
+                // _buildTitle(),
+                // SizedBox(height: 15),
+                // _buildDescription(),
+                _buildTitleDesc(),
                 SizedBox(height: 40),
-                _buildStartButton(),
+                _buildStartButton(context),
               ],
             ),
           ),
