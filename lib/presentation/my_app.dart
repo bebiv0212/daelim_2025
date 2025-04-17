@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      routerConfig: router, //처음 시작할 화면면
+      routerConfig: router, //처음 시작할 화면
     );
   }
 }
