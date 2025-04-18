@@ -1,7 +1,10 @@
+import 'package:daelim_2025/app/router/app_route.dart';
+import 'package:daelim_2025/main/widgets/gender_box.dart';
 import 'package:daelim_2025/main/widgets/height_box.dart';
 import 'package:daelim_2025/main/widgets/in_de_container.dart';
 import 'package:daelim_2025/presentation/common/widget/white_box.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,6 +16,26 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _age = 0;
   int _weight = 0;
+  double _height = 100.0;
+  Gender _gender = Gender.male;
+
+  void _onCalculated() {
+    debugPrint('나이: $_age');
+    debugPrint('몸무게: $_weight');
+    debugPrint('키: $_height');
+    debugPrint('성별: $_gender');
+
+    final chHeight = _height.round() / 100;
+
+    final bmi = _weight / (chHeight * chHeight);
+
+    debugPrint('bmi : $bmi');
+
+    context.pushNamed(
+      AppRoute.result.name,
+      queryParameters: {'bmi': bmi.toStringAsFixed(2)},
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +82,28 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ],
               ),
-              //#endregion
-              HeightBox(),
+              //키
+              HeightBox(
+                onChanged: (height) {
+                  _height = height;
+                  debugPrint('키 : $height');
+                },
+              ),
 
-              WhiteBox(padding: EdgeInsets.all(25), child: SizedBox.shrink()),
+              //성별
+              GenderBox(
+                onChanged: (gender) {
+                  _gender = gender;
+                  debugPrint('성별 : $gender');
+                },
+              ),
+
+              //calculator button
               SizedBox(
                 width: double.infinity,
                 height: 75,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _onCalculated,
                   child: Text('Calculate BMI'),
                 ),
               ),
